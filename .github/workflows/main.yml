@@ -3,7 +3,6 @@ on: [push]
 permissions:
   contents: read
   pages: write
-  id-token: write
 jobs:
   setup:
     name: Install & pre-test
@@ -94,27 +93,16 @@ jobs:
         with:
           name: GeneratedReport
           path: GeneratedReport
-      - name: Setup Pages
-        uses: actions/configure-pages@v2
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
+      - name: Copy test execution videos
+        run: |
+          mkdir public
+          cp -r GeneratedReport public/GeneratedReport
+      - name: Deploy to GitHub Pages 🚀
+        uses: peaceiris/actions-gh-pages@v3.7.3
         with:
-          source: ./
-          destination: ./_site
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-
-  # Deployment job
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: reporting
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./public
 #       - name: Install rsync 📚
 #         run: |
 #           apt-get update && apt-get install -y rsync
@@ -122,16 +110,7 @@ jobs:
 #         uses: JamesIves/github-pages-deploy-action@v4
 #         with:
 #           folder: GeneratedReport # The folder the action should deploy.
-#       - name: Copy test execution videos
-#         run: |
-#           mkdir public
-#           cp -r GeneratedReport public/GeneratedReport
-#       - name: Deploy to GitHub Pages 🚀
-#         uses: peaceiris/actions-gh-pages@v3.7.3
-#         with:
-#           github_token: ${{ secrets.GITHUB_TOKEN }}
-#           publish_branch: gh-pages
-#           publish_dir: ./public
+
 
 
 
