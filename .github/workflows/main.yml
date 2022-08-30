@@ -1,8 +1,9 @@
 name: Cypress Tests
 on: [push]
 permissions:
-  contents: write
+  contents: read
   pages: write
+  id-token: write
 jobs:
   setup:
     name: Install & pre-test
@@ -93,13 +94,37 @@ jobs:
         with:
           name: GeneratedReport
           path: GeneratedReport
-      - name: Install rsync 📚
-        run: |
-          apt-get update && apt-get install -y rsync
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
         with:
-          folder: GeneratedReport # The folder the action should deploy.
+          source: ./
+          destination: ./_site
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          name: GeneratedReport
+          path: GeneratedReport
+
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: reporting
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
+#       - name: Install rsync 📚
+#         run: |
+#           apt-get update && apt-get install -y rsync
+#       - name: Deploy 🚀
+#         uses: JamesIves/github-pages-deploy-action@v4
+#         with:
+#           folder: GeneratedReport # The folder the action should deploy.
 #       - name: Copy test execution videos
 #         run: |
 #           mkdir public
