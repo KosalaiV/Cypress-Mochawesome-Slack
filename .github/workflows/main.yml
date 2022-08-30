@@ -1,8 +1,9 @@
 name: Cypress Tests
 on: [push]
-
+permissions:
+  contents: write
+  pages: write
 jobs:
-
   setup:
     name: Install & pre-test
     runs-on: ubuntu-latest
@@ -56,9 +57,6 @@ jobs:
     needs: [setup,execution]
     if: always()
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pages: write
     container:
       image: cypress/browsers:node14.17.6-chrome100-ff98
     steps:
@@ -95,16 +93,23 @@ jobs:
         with:
           name: GeneratedReport
           path: GeneratedReport
-      - name: Copy test execution videos
+      - name: Install rsync 📚
         run: |
-          mkdir public
-          cp -r GeneratedReport public/GeneratedReport
-      - name: Deploy to GitHub Pages 🚀
-        uses: peaceiris/actions-gh-pages@v3.7.3
+          apt-get update && apt-get install -y rsync
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./public
+          folder: GeneratedReport # The folder the action should deploy.
+#       - name: Copy test execution videos
+#         run: |
+#           mkdir public
+#           cp -r GeneratedReport public/GeneratedReport
+#       - name: Deploy to GitHub Pages 🚀
+#         uses: peaceiris/actions-gh-pages@v3.7.3
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           publish_branch: gh-pages
+#           publish_dir: ./public
 
 
 
