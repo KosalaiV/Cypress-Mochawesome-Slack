@@ -93,24 +93,23 @@ jobs:
         with:
           name: GeneratedReport
           path: GeneratedReport
-      - name: Copy test execution videos
-        run: |
-           cp -r GeneratedReport/* ./
+#       - name: Copy test execution videos
+#         run: |
 #          mkdir public
 #          cp -r GeneratedReport public/GeneratedReport
-      - name: Deploy to GitHub Pages 🚀
-        uses: peaceiris/actions-gh-pages@v3.7.3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./public
+#       - name: Deploy to GitHub Pages 🚀
+#         uses: peaceiris/actions-gh-pages@v3.7.3
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           publish_branch: gh-pages
+#           publish_dir: ./public
 #       - name: Install rsync 📚
 #         run: |
 #           apt-get update && apt-get install -y rsync
-#       - name: Deploy 🚀
-#         uses: JamesIves/github-pages-deploy-action@v4
-#         with:
-#           folder: GeneratedReport # The folder the action should deploy.
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: GeneratedReport # The folder the action should deploy.
 
 
 
