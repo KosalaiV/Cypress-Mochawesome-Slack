@@ -57,8 +57,6 @@ jobs:
     needs: [setup,execution]
     if: always()
     runs-on: ubuntu-latest
-#     container:
-#       image: cypress/browsers:node14.17.6-chrome100-ff98
     steps:
       - name: Download screenshot
         uses: actions/download-artifact@v3
@@ -81,28 +79,26 @@ jobs:
           done
       - name: Merge and generate reports
         run: |
-          mkdir GeneratedReport
-          cp -r TestReport/**/*.png GeneratedReport
-          npx mochawesome-merge > GeneratedReport/cypress-tests-report.json
-          npx mochawesome-report-generator --reportDir GeneratedReport GeneratedReport/cypress-tests-report.json
+          mkdir public
+          cp -r TestReport/**/*.png public
+          npx mochawesome-merge > public/index.json
+          npx mochawesome-report-generator --reportDir public public/index.json
       - name: Slack report
-        run: npx cypress-slack-reporter --screenshot-dir GeneratedReport --report-dir GeneratedReport --ci-provider custom --custom-url='~/GeneratedReport/cypress-tests-report.html'
+        run: npx cypress-slack-reporter --screenshot-dir public --report-dir public --ci-provider custom --custom-url='~/public/index.html'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       - uses: actions/upload-artifact@v3
         with:
-          name: GeneratedReport
-          path: GeneratedReport
-      - name: Copy test execution videos
-        run: |
-         mkdir public
-         cp -r GeneratedReport public/GeneratedReport
+          name: public
+          path: public
       - name: Deploy to GitHub Pages 🚀
         uses: peaceiris/actions-gh-pages@v3.7.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./public
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
 
 
 
