@@ -103,13 +103,8 @@ jobs:
 #           github_token: ${{ secrets.GITHUB_TOKEN }}
 #           publish_branch: gh-pages
 #           publish_dir: ./public
-#       - name: Install rsync 📚
-#         run: |
-#           apt-get update && apt-get install -y rsync
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: GeneratedReport # The folder the action should deploy.
+
+
 
 
 
