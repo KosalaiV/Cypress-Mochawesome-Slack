@@ -96,7 +96,7 @@ jobs:
       - name: Copy test execution videos
         run: |
           mkdir public
-          cp -r GeneratedReport/* public/
+          cp -r GeneratedReport public/GeneratedReport
       - name: Deploy to GitHub Pages 🚀
         uses: peaceiris/actions-gh-pages@v3.7.3
         with:
