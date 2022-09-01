@@ -5,7 +5,7 @@ permissions:
   pages: write
 jobs:
   setup:
-    name: Install & pre-test
+    name: Install & pre-test 🛠 
     runs-on: ubuntu-latest
     container:
       image: cypress/browsers:node14.17.6-chrome100-ff98
@@ -24,7 +24,7 @@ jobs:
         run: mkdir reports 
 
   execution:
-    name: Cypress Execution
+    name: Cypress execution ⏳
     runs-on:  ubuntu-latest
     container:
       image: cypress/browsers:node14.17.6-chrome100-ff98
@@ -53,7 +53,7 @@ jobs:
           path: TestReport   
 
   reporting:
-    name: Cypress Mochawesome and Slack Reporting
+    name: Cypress reporting & deployment 🚀
     needs: [setup,execution]
     if: always()
     runs-on: ubuntu-latest
@@ -84,14 +84,14 @@ jobs:
           npx mochawesome-merge > public/index.json
           npx mochawesome-report-generator --reportDir public public/index.json
       - name: Slack report
-        run: npx cypress-slack-reporter --screenshot-dir public --report-dir public --ci-provider custom --custom-url='~/public/index.html'
+        run: npx cypress-slack-reporter --screenshot-dir public --report-dir public --ci-provider custom --custom-url='https://kosalaiv.github.io/Cypress-Mochawesome-Slack/'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       - uses: actions/upload-artifact@v3
         with:
           name: public
           path: public
-      - name: Deploy to GitHub Pages 🚀
+      - name: Deploy to GitHub Pages 
         uses: peaceiris/actions-gh-pages@v3.7.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
