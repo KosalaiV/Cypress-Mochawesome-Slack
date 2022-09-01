@@ -93,10 +93,10 @@ jobs:
         with:
           name: GeneratedReport
           path: GeneratedReport
-#       - name: Copy test execution videos
-#         run: |
-#          mkdir public
-#          cp -r GeneratedReport public/GeneratedReport
+      - name: Copy test execution videos
+        run: |
+         mkdir public
+         cp -r GeneratedReport public/GeneratedReport
       - name: Deploy to GitHub Pages 🚀
         uses: peaceiris/actions-gh-pages@v3.7.3
         with:
