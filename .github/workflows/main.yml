@@ -57,8 +57,8 @@ jobs:
     needs: [setup,execution]
     if: always()
     runs-on: ubuntu-latest
-    container:
-      image: cypress/browsers:node14.17.6-chrome100-ff98
+#     container:
+#       image: cypress/browsers:node14.17.6-chrome100-ff98
     steps:
       - name: Download screenshot
         uses: actions/download-artifact@v3
@@ -96,7 +96,7 @@ jobs:
       - name: Copy test execution videos
         run: |
           mkdir public
-          cp -r GeneratedReport/* public/GeneratedReport
+          cp -r GeneratedReport/* public/
       - name: Deploy to GitHub Pages 🚀
         uses: peaceiris/actions-gh-pages@v3.7.3
         with:
