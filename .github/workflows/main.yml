@@ -42,6 +42,10 @@ jobs:
           command: npx cypress run --spec 'cypress/e2e/${{ matrix.containers }}/*.cy.js'
           browser: chrome
         continue-on-error: true
+      - name: Copy test execution videos
+        run: |
+          mkdir public
+          cp -r cypress/videos public/videos
       - name: Upload mochawesome report
         uses: actions/upload-artifact@v3
         with:
@@ -79,7 +83,7 @@ jobs:
           done
       - name: Merge and generate reports
         run: |
-          mkdir public
+ #         mkdir public
           cp -r TestReport/**/*.png public
           npx mochawesome-merge > public/index.json
           npx mochawesome-report-generator --reportDir public public/index.json
