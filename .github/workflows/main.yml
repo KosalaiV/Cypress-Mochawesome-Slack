@@ -53,8 +53,12 @@ jobs:
           path: mochawesome-report
       - uses: actions/upload-artifact@v3
         with:
-          name: TestReport
-          path: TestReport   
+          name: Cypress screenshots
+          path: TestReport
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Cypress videos
+          path: public/videos 
 
   reporting:
     name: Cypress reporting & deployment 🚀
@@ -62,11 +66,14 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: Download screenshot
-        uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v3
         with:
-          name: TestReport
+          name: Cypress screenshots
           path: TestReport
+      - uses: actions/download-artifact@v3
+        with:
+          name: Cypress videos
+          path: public/videos
       - name: Download test-reports
         uses: actions/download-artifact@v3
         with:
@@ -83,12 +90,11 @@ jobs:
           done
       - name: Merge and generate reports
         run: |
- #         mkdir public
           cp -r TestReport/**/*.png public
           npx mochawesome-merge > public/index.json
           npx mochawesome-report-generator --reportDir public public/index.json
       - name: Slack report
-        run: npx cypress-slack-reporter --screenshot-dir public --report-dir public --ci-provider custom --custom-url='https://kosalaiv.github.io/Cypress-Mochawesome-Slack/'
+        run: npx cypress-slack-reporter --ci-provider custom --custom-url='https://kosalaiv.github.io/cypress-report/'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       - uses: actions/upload-artifact@v3
@@ -103,8 +109,6 @@ jobs:
           publish_dir: ./public
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
-
-
 
 
 
