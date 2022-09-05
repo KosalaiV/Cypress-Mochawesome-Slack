@@ -27,7 +27,7 @@
     "cypress": "^10.0.2",
     "cypress-mochawesome-reporter": "^3.2.1",
     "cypress-multi-reporters": "^1.6.1",
-    "cypress-slack-reporter": "^1.1.6-alpha",
+    "cypress-slack-reporter": "v0.7.1",
     "eslint-plugin-cypress": "^2.12.1",
     "mochawesome": "^6.1.1",
     "mochawesome-merge": "^4.1.0",

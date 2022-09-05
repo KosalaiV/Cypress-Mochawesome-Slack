@@ -1,3 +1,4 @@
+describe('Forgot Password', () => {
   it('Validate forgot password with API approach', () => {
     cy.request({
       method: 'POST',
@@ -21,3 +22,4 @@
       timeout: 10000,
     }).should('be.visible'); // Expect to fail as currently application throws 500 error
   });
+});
