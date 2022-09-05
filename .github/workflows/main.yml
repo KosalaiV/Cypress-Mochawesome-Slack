@@ -94,7 +94,7 @@ jobs:
           npx mochawesome-merge > public/index.json
           npx mochawesome-report-generator --reportDir public public/index.json
       - name: Slack report
-        run: npx cypress-slack-reporter --report-dir public --ci-provider custom --custom-url='https://kosalaiv.github.io/Cypress-Mochawesome-Slack'
+        run: npx cypress-slack-reporter --ci-provider custom --custom-url='https://kosalaiv.github.io/Cypress-Mochawesome-Slack' --report-dir public 
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       - uses: actions/upload-artifact@v3
@@ -107,6 +107,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./public
+
 
 
 
