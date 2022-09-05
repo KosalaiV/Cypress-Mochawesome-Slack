@@ -20,7 +20,13 @@ import 'cypress-mochawesome-reporter/register';
 Cypress.on('test:after:run', (test, runnable) => {
   if (test.state === 'failed') {
     cy.move('Success');
-    const screenshot = `${parent.title} -- ${test.title} (failed).png`;
+    let parent = runnable.parent;
+    let parentTitle = parent.title;
+    while (parent.parent?.title) {
+      parent = parent.parent;
+      parentTitle = `${parent.title} -- ${parentTitle}`;
+    }
+    const screenshot = `${parentTitle} -- ${test.title} (failed).png`;
     addContext({ test }, screenshot);
   }
 });
